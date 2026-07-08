@@ -1,6 +1,6 @@
-# SecurityScanService
+# DevSecOps Security Pipeline
 
-A deliberately vulnerable FastAPI scanning service hardened through offensive validation, secure coding controls, protected branches, and GitLab CI/CD security gates.
+SecurityScanService is a deliberately vulnerable FastAPI scanning service used to demonstrate offensive validation, secure coding controls, protected branches, and GitLab CI/CD security gates.
 
 > **CI/CD note:** The pipeline was designed and validated in GitLab CI/CD.  
 > GitHub is used as the public portfolio mirror.
