@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+aws/
+dist/
+node_modules/semgrep.sarif
+*.sarif
+
+# Local tooling and generated reports
+.claude/
+.ruff_cache/
+semgrep.sarif
+*.sarif

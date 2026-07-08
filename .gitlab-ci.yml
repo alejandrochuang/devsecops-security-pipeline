@@ -1,0 +1,60 @@
+stages:
+  - security
+
+default:
+  interruptible: true
+
+semgrep:
+  stage: security
+  image: semgrep/semgrep
+  script:
+    - semgrep scan --config auto --error --sarif --output semgrep.sarif app/ Dockerfile
+  artifacts:
+    when: always
+    reports:
+      sast: semgrep.sarif
+    paths:
+      - semgrep.sarif
+
+pip-audit:
+  stage: security
+  image: python:3.11-slim
+  script:
+    - pip install --no-cache-dir pip-audit
+    - pip-audit -r requirements.txt
+
+trivy-config:
+  stage: security
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  script:
+    - trivy config --format sarif --output trivy-config.sarif .
+  artifacts:
+    when: always
+    paths:
+      - trivy-config.sarif
+  allow_failure: true
+
+trivy-base-image:
+  stage: security
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  script:
+    - trivy image --scanners vuln --pkg-types os python:3.11-slim
+  allow_failure: true
+
+socket:
+  stage: security
+  image: python:3.11-slim
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends git
+    - rm -rf /var/lib/apt/lists/*
+  script:
+    - pip install --no-cache-dir socketsecurity
+    - socketcli
+      --api-token "$SOCKET_SECURITY_API_KEY"
+      --target-path .
+      --integration gitlab
