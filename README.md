@@ -68,10 +68,13 @@ curl -s -X POST http://<target>:8000/api/scan   -H 'Content-Type: application/js
 # → Nmap version 7.95 … (the flag executed instead of a scan)
 ```
 
-| SSRF / arbitrary server-side scanning | Argument injection |
-|---|---|
-| The API accepted `127.0.0.1` and scanned an internal service (`Uvicorn:3000`). | The value `-V` was interpreted as an Nmap option, not a target. |
-| ![SSRF before hardening](docs/images/ssrf-before-hardening.png) | ![Argument injection before hardening](docs/images/argument-injection-before-hardening.png) |
+**SSRF / arbitrary server-side scanning**: The API accepted `127.0.0.1` and scanned an internal service `Uvicorn:3000`.
+
+![SSRF before hardening](docs/images/ssrf-before-hardening.png) 
+
+**Argument injection**: The value `-V` was interpreted as an Nmap option, not a target.
+
+![Argument injection before hardening](docs/images/argument-injection-before-hardening.png)
 
 ### Remediation
 
